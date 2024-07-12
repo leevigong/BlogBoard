@@ -38,7 +38,7 @@ public class ArticleApiController {
     @GetMapping("api/articles/{id}")
     //URL 경로에서 값 추출
     public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id){
-        Article article = articleService.findNById(id);
+        Article article = articleService.findById(id);
 
         return ResponseEntity.ok()
                 .body(new ArticleResponse(article));

@@ -27,7 +27,7 @@ public class ArticleService {
     }
 
     // 블로그 글 하나 조회 메서드
-    public Article findNById(Long id){
+    public Article findById(Long id){
         return articleRepository.findById(id)
                 .orElseThrow(()-> new IllegalArgumentException("not foung: " + id));
     }
