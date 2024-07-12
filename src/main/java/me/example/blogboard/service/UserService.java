@@ -2,20 +2,22 @@ package me.example.blogboard.service;
 
 import lombok.RequiredArgsConstructor;
 import me.example.blogboard.domain.User;
+import me.example.blogboard.dto.AddUserRequest;
 import me.example.blogboard.repository.UserRepository;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    // 사용자 이름(email)으로 사용자 정보를 가져오는 메서드
-    @Override
-    public User loadUserByUsername(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(email));
+    public Long save(AddUserRequest dto){
+        return userRepository.save(User.builder()
+                .email(dto.getEmail())
+                // 1. 패스워드 암호화
+                .password(bCryptPasswordEncoder.encode(dto.getPassword()))
+                .build()).getId();
     }
 }
